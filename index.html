@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DCI — Access Flagged</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="alert-banner">⚠ &nbsp; Security Alert — Unauthorised Access Detected — This Session Is Being Monitored &nbsp; ⚠</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="logo-pill">
+        <img
+          src="https://www.dci.go.ke/sites/default/files/banner2.png"
+          alt="Directorate of Criminal Investigations — Republic of Kenya"
+          class="dci-logo"
+          onerror="this.parentElement.style.display='none'"
+        />
+      </div>
+      <div class="header-titles">
+        <div class="country">Republic of Kenya</div>
+        <div class="dept">Directorate of Criminal Investigations</div>
+        <div class="sub">Cyber Crime Unit · Digital Forensics Division</div>
+      </div>
+    </div>
+
+    <div class="header-meta-strip">
+      <div class="meta-item">
+        <span class="mlabel">Case Reference</span>
+        <span class="mval case" id="caseNo">DCI/CC/----/----</span>
+      </div>
+      <div class="meta-item">
+        <span class="mlabel">Priority</span>
+        <span class="mval crit">CRITICAL</span>
+      </div>
+      <div class="meta-item">
+        <span class="mlabel">Classification</span>
+        <span class="mval">RESTRICTED</span>
+      </div>
+      <div class="meta-item">
+        <span class="mlabel">Unit</span>
+        <span class="mval green">DCI CYBER CRIME</span>
+      </div>
+      <div class="meta-item" style="margin-left:auto;">
+        <span class="mlabel">Current Time (EAT)</span>
+        <span class="mval clock" id="headerClock">--:--:--</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TITLE -->
+  <div class="title-block">
+    <span class="warning-icon">⛔</span>
+    <h1>Device Flagged &amp; Access Logged</h1>
+    <div class="tagline">Your connection to this server has been intercepted and recorded</div>
+  </div>
+
+  <!-- SCAN BAR -->
+  <div class="scan-wrap">
+    <div class="scan-labels">
+      <span id="scanLabel">SCANNING DEVICE &amp; NETWORK</span>
+      <span id="scanPct">0%</span>
+    </div>
+    <div class="scan-track">
+      <div class="scan-fill" id="scanFill"></div>
+    </div>
+  </div>
+
+  <!-- NOTICE -->
+  <div class="notice-box">
+    <strong>TAKE NOTICE:</strong> This server is monitored under the
+    <span class="law">Kenya Computer Misuse and Cybercrimes Act, 2018 (No. 5 of 2018)</span>.
+    Your device has been <strong>automatically identified</strong> and your connection details captured
+    and forwarded to the <strong>DCI Cyber Crime Unit</strong> for immediate review.<br><br>
+    Accessing restricted digital infrastructure is an offence under <strong>Section 16</strong> of the Act,
+    carrying a penalty of up to <span class="penalty">Ksh 5,000,000 or 10 years imprisonment</span>, or both.
+  </div>
+
+  <!-- DATA TABLE -->
+  <div class="data-panel" id="dataPanel">
+    <div class="data-panel-header">
+      <div class="live-dot"></div>
+      <span id="panelHeaderText">Intercepted Device Intelligence — Live Capture</span>
+    </div>
+
+    <div class="data-row">
+      <div class="dl">IP Address</div>
+      <div class="dv ip-val loading" id="v-ip">Resolving...</div>
+    </div>
+    <div class="data-row">
+      <div class="dl">Location</div>
+      <div class="dv loading" id="v-loc">Resolving...</div>
+    </div>
+    <div class="data-row">
+      <div class="dl">Region</div>
+      <div class="dv loading" id="v-reg">Resolving...</div>
+    </div>
+    <div class="data-row">
+      <div class="dl">Internet Provider</div>
+      <div class="dv loading" id="v-isp">Resolving...</div>
+    </div>
+    <div class="data-row">
+      <div class="dl">Device / Browser</div>
+      <div class="dv" id="v-dev">Detecting...</div>
+    </div>
+    <div class="data-row">
+      <div class="dl">Live Monitor</div>
+      <div class="dv live-clock-val" id="v-liveclock">--:--:--</div>
+    </div>
+    <div class="data-row session-row" id="sessionRow">
+      <div class="dl">Session Captured</div>
+      <div class="dv" id="v-session">—</div>
+    </div>
+    <div class="data-row">
+      <div class="dl">Status</div>
+      <div class="dv status-val">FLAGGED <span class="badge">UNDER REVIEW</span></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="sealed">■ &nbsp; This record is sealed and admissible as evidence &nbsp; ■</div>
+    <div class="addr">DCI Cyber Crime Unit · P.O. Box 30083-00100 · Nairobi, Kenya</div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
