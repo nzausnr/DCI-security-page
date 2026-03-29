@@ -32,6 +32,66 @@ const browser = /Edg/.test(ua)        ? 'Microsoft Edge' : /OPR|Opera/.test(ua) 
                 /Firefox/.test(ua)    ? 'Firefox'    : 'Unknown Browser';
 document.getElementById('v-dev').textContent = `${device} · ${browser}`;
 
+// ── Screen resolution ──────────────────────────────────────────
+document.getElementById('v-screen').textContent =
+  `${window.screen.width} × ${window.screen.height} px (${window.devicePixelRatio}x DPI)`;
+
+// ── Language ───────────────────────────────────────────────────
+document.getElementById('v-lang').textContent = navigator.language || navigator.languages?.[0] || 'Unknown';
+
+// ── Timezone ───────────────────────────────────────────────────
+document.getElementById('v-tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+// ── Connection type ────────────────────────────────────────────
+const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+if (conn) {
+  const type = conn.effectiveType || conn.type || 'Unknown';
+  const downlink = conn.downlink ? ` · ${conn.downlink} Mbps` : '';
+  document.getElementById('v-conn').textContent = `${type.toUpperCase()}${downlink}`;
+} else {
+  document.getElementById('v-conn').textContent = 'Online';
+}
+
+// ── Battery ────────────────────────────────────────────────────
+if (navigator.getBattery) {
+  navigator.getBattery().then(bat => {
+    const pct   = Math.round(bat.level * 100);
+    const state = bat.charging ? '⚡ Charging' : '🔋 On Battery';
+    document.getElementById('v-battery').textContent = `${pct}% · ${state}`;
+  }).catch(() => {
+    document.getElementById('v-battery').textContent = 'Unavailable';
+  });
+} else {
+  document.getElementById('v-battery').textContent = 'Unavailable';
+}
+
+// ── CPU cores ──────────────────────────────────────────────────
+document.getElementById('v-cpu').textContent =
+  navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency} logical cores` : 'Unavailable';
+
+// ── Device memory ──────────────────────────────────────────────
+document.getElementById('v-ram').textContent =
+  navigator.deviceMemory ? `≥ ${navigator.deviceMemory} GB` : 'Unavailable';
+
+// ── GPU via WebGL ──────────────────────────────────────────────
+try {
+  const canvas = document.createElement('canvas');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (gl) {
+    const ext = gl.getExtension('WEBGL_debug_renderer_info');
+    if (ext) {
+      const renderer = gl.getParameter(ext.UNMASKED_RENDERER_WEBGL);
+      document.getElementById('v-gpu').textContent = renderer;
+    } else {
+      document.getElementById('v-gpu').textContent = 'WebGL available (renderer masked)';
+    }
+  } else {
+    document.getElementById('v-gpu').textContent = 'WebGL unavailable';
+  }
+} catch(e) {
+  document.getElementById('v-gpu').textContent = 'Unavailable';
+}
+
 // ── Scan bar animation (initial load) ──────────────────────────
 const scanFill  = document.getElementById('scanFill');
 const scanPct   = document.getElementById('scanPct');
@@ -54,7 +114,7 @@ function runScan(onComplete) {
   }, 60);
 }
 
-runScan(); // initial scan, no callback needed
+runScan();
 
 // ── IP geolocation (runs once on load) ─────────────────────────
 function reveal(id, text, delay) {
@@ -92,44 +152,28 @@ tickClock();
 setInterval(tickClock, 1000);
 
 // ── RE-CAPTURE — triggers every 90 seconds ─────────────────────
-// New case number + new session timestamp + flash effect
 function triggerRecapture() {
   const panel      = document.getElementById('dataPanel');
   const sessionRow = document.getElementById('sessionRow');
   const headerText = document.getElementById('panelHeaderText');
   const caseEl     = document.getElementById('caseNo');
 
-  // 1. Flash the panel border red
   panel.classList.add('recapture');
-
-  // 2. Update header text briefly
   headerText.textContent = 'NEW SESSION DETECTED — RE-CAPTURING...';
-
-  // 3. Run scan bar again
   scanLabel.textContent = 'RE-SCANNING DEVICE & NETWORK';
   scanPct.textContent   = '0%';
   runScan();
 
-  // 4. After short delay, update case + session timestamp
   setTimeout(() => {
-    const newCase = genCase();
-    caseEl.textContent = newCase;
+    caseEl.textContent = genCase();
+    document.getElementById('v-session').textContent = formatFull(new Date());
 
-    const now = new Date();
-    document.getElementById('v-session').textContent = formatFull(now);
-
-    // Briefly highlight session row
     sessionRow.classList.add('updated');
     setTimeout(() => sessionRow.classList.remove('updated'), 3000);
 
-    // Restore header text
     headerText.textContent = 'Intercepted Device Intelligence — Live Capture';
-
-    // Remove flash after a moment
     setTimeout(() => panel.classList.remove('recapture'), 3000);
-
   }, 1800);
 }
 
-// First re-capture after 90 seconds, then every 90 seconds
 setInterval(triggerRecapture, 90000);
